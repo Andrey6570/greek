@@ -84,26 +84,57 @@ input[type=search]{width:100%;font:inherit;padding:12px;border-radius:10px;borde
 .foot{font-size:.78rem;color:var(--muted);text-align:center}
 .mist{display:flex;flex-direction:column;gap:6px}
 select{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);margin-top:4px;max-width:100%}
+
+.vz{display:flex;flex-direction:column;gap:10px}
+.vz h4{margin:0;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{padding:8px 12px;border-radius:10px;font-weight:600;overflow-wrap:anywhere}
+.f0{background:var(--accent-soft);color:var(--accent-t)}.f1{background:var(--good-soft);color:var(--good)}.f2{background:var(--warn-soft);color:var(--warn)}.f3{background:var(--bad-soft);color:var(--bad)}
+.op{font-weight:700;color:var(--muted);padding:0 2px}
+.tb{width:100%;border-collapse:collapse;font-size:.95rem}
+.tb th{background:var(--accent-soft);color:var(--accent-t);text-align:left;padding:7px 8px;font-size:.85rem}
+.tb td{padding:7px 8px;border-top:1px solid var(--line);overflow-wrap:anywhere}
+.tb b{color:var(--accent-t);background:var(--accent-soft);border-radius:4px;padding:0 3px}
+.tbw{overflow-x:auto}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:380px){.cmp{grid-template-columns:1fr}}
+.cmp>div{border-radius:12px;padding:10px 12px;border:1px solid var(--line)}
+.cmp>div:first-child{background:var(--accent-soft)}.cmp>div:last-child{background:var(--warn-soft)}
+.cmp b.h{display:block;margin-bottom:4px}
+.cmp ul{margin:0;padding-left:18px}
+.stp{display:flex;flex-direction:column;gap:6px;counter-reset:s}
+.stp div{position:relative;padding:8px 10px 8px 42px;border-radius:10px;background:var(--accent-soft);counter-increment:s}
+.stp div:before{content:counter(s);position:absolute;left:10px;top:8px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.tl{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px}
+.tl .nd{flex:1 0 96px;text-align:center;padding:10px 6px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.tl .nd:nth-child(4n+1){border-top:4px solid var(--accent-t)}.tl .nd:nth-child(4n+3){border-top:4px solid var(--good)}.tl .nd:nth-child(4n+5){border-top:4px solid var(--warn)}.tl .nd:nth-child(4n+7){border-top:4px solid var(--bad)}
+.tl .ar{align-self:center;color:var(--muted);padding:0 4px}
+.tl .nd .g{font-weight:700}
+.exs{display:flex;flex-direction:column;gap:6px}
+.exs div{padding:8px 10px;border-left:4px solid var(--accent);background:var(--bg);border-radius:0 10px 10px 0}
+.exs b{color:var(--accent-t)}
+.tip{padding:10px 12px;border-radius:12px;background:var(--good-soft);color:var(--ink)}
+.tip.warn{background:var(--warn-soft)}
+.tip:before{content:"💡 ";}.tip.warn:before{content:"⚠ ";}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.85rem}
+.more p{margin:0 0 8px}
+.dir{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.dir button{border:0;background:none;padding:9px 4px;border-radius:9px;font-weight:600}
+.dir button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.letter{font-weight:700;color:var(--accent-t);margin:8px 0 0;font-size:1.1rem}
+.de{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:block}
+.de .k{font-weight:600;overflow-wrap:anywhere}.de .v{color:var(--muted);overflow-wrap:anywhere}.de .x{margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:.92rem}
+.setp{display:flex;flex-direction:column;gap:14px}
 </style></head><body>
 <div id="app">
   <div class="top"><div class="brand">Ελληνικά · 5 минут</div>
-    <div class="row"><span class="sm" id="streak"></span><button class="btn" id="setBtn" aria-expanded="false">Вид</button></div></div>
-  <div class="card set" id="settings" hidden>
-    <div><h4>Режим</h4><div class="seg" id="segMode">
-      <button data-v="light">Светлый</button><button data-v="dark">Тёмный</button></div></div>
-    <div><h4>Цветовая гамма</h4><div class="seg" id="segPal"></div></div>
-    <div><h4>Размер текста</h4><div class="seg" id="segSize">
-      <button data-v="1">Обычный</button><button data-v="1.15">Крупный</button><button data-v="1.3">Очень крупный</button></div></div>
-    <div><h4>Учёба</h4>
-      <label class="chk"><input type="checkbox" id="optCy"> Показывать кипрский вариант</label>
-      <label class="chk" style="margin-top:8px"><input type="checkbox" id="optRu"> На карточках сначала русский</label>
-      <div style="margin-top:10px"><label class="sm" for="optFrom">Новые карточки начинать с урока</label><br><select id="optFrom"></select></div></div>
-  </div>
+    <div class="row"><span class="sm" id="streak"></span><button class="btn" id="setBtn">⚙ Настройки</button></div></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" data-tab="learn">Учить</button>
     <button class="tab" role="tab" data-tab="tests">Задания</button>
     <button class="tab" role="tab" data-tab="rules">Правила</button>
-    <button class="tab" role="tab" data-tab="deck">Колода</button>
+    <button class="tab" role="tab" data-tab="deck">Словарь</button>
   </div>
   <div class="panel" id="view"></div>
   <div class="foot" id="foot"></div>
@@ -148,11 +179,6 @@ function applyLook(){
   document.querySelectorAll('#segSize button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===String(s.size)));
   document.querySelectorAll('#segPal button').forEach(b=>{ const q=PALS[b.dataset.v]; b.style.background = dark ? q.d : q.a; b.setAttribute('aria-pressed', b.dataset.v===s.pal); });
 }
-$('#segPal').innerHTML = Object.entries(PALS).map(([k,p])=>`<button class="sw" data-v="${k}" aria-label="${p.n}" title="${p.n}"></button>`).join('');
-$('#segMode').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.mode=b.dataset.v; save(); applyLook(); } };
-$('#segPal').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.pal=b.dataset.v; save(); applyLook(); } };
-$('#segSize').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.size=b.dataset.v; save(); applyLook(); } };
-$('#setBtn').onclick = ()=>{ const h = $('#settings').hidden = !$('#settings').hidden; $('#setBtn').setAttribute('aria-expanded', String(!h)); };
 
 function today(){ return Math.floor(Date.now()/DAY); }
 function card(id){ return st.cards[id] || (st.cards[id] = {box:-1, due:0}); }
@@ -308,7 +334,26 @@ function renderCloze(){
   });
 }
 
-/* правила: объяснение → закрепление (drill) → проверка (quiz) */
+/* ---------- визуализация правил ---------- */
+const VZ_TITLE = {formula:'Схема',table:'Таблица',compare:'Сравнение',steps:'Как образовать',timeline:'Шкала',ex:'Примеры'};
+function vizHtml(b){
+  const h = t=>b.title?`<h4>${esc(b.title)}</h4>`:`<h4>${t}</h4>`;
+  switch(b.t){
+    case 'formula': { let k=0; return `<div class="vz">${h(VZ_TITLE.formula)}<div class="fm">${(b.parts||[]).map(p=>{
+        if(p.c==='op') return `<span class="op">${esc(p.x)}</span>`;
+        const c = ['a','b','c','d'].indexOf(p.c); const i = c>=0?c:(k++%4);
+        return `<span class="chip f${i}">${p.x}</span>`;}).join('')}</div>${b.note?`<div class="sm">${b.note}</div>`:''}</div>`; }
+    case 'table': return `<div class="vz">${h(VZ_TITLE.table)}<div class="tbw"><table class="tb"><thead><tr>${(b.head||[]).map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${(b.rows||[]).map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+    case 'compare': { const side = o=>`<div><b class="h">${o.h||''}</b><ul>${(o.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul></div>`; return `<div class="vz">${h(VZ_TITLE.compare)}<div class="cmp">${side(b.a||{})}${side(b.b||{})}</div></div>`; }
+    case 'steps': return `<div class="vz">${h(VZ_TITLE.steps)}<div class="stp">${(b.items||[]).map(i=>`<div>${i}</div>`).join('')}</div></div>`;
+    case 'timeline': return `<div class="vz">${h(VZ_TITLE.timeline)}<div class="tl">${(b.items||[]).map((i,n)=>(n?'<span class="ar">→</span>':'')+`<div class="nd"><div class="sm">${i.h||''}</div><div class="g">${i.x||''}</div><div class="sm">${i.ru||''}</div></div>`).join('')}</div></div>`;
+    case 'ex': return `<div class="vz">${h(VZ_TITLE.ex)}<div class="exs">${(b.items||[]).map(i=>`<div>${i.gr}<div class="sm">${i.ru||''}</div></div>`).join('')}</div></div>`;
+    case 'tip': return `<div class="tip ${b.k==='warn'?'warn':''}">${b.x}</div>`;
+  }
+  return '';
+}
+
+/* правила: объяснение → подробно → схемы → закрепление → проверка */
 function renderRules(){
   const groups = {};
   DECK.rules.forEach(r=>{ const g = Math.floor((r.l-1)/10); (groups[g] = groups[g]||[]).push(r); });
@@ -319,19 +364,23 @@ function renderRules(){
   view.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>openRule(b.dataset.r));
 }
 function openRule(id){
-  const r = DECK.rules.find(x=>x.id===id), drill = r.drill||[];
+  const r = DECK.rules.find(x=>x.id===id), drill = r.drill||[], more = r.more||[], viz = r.viz||[];
   let dScore = 0, dTotal = 0, qScore = 0, qAnswered = 0;
   view.innerHTML = `<button class="btn" id="back" style="align-self:flex-start">← Все правила</button>
-    <div class="card rule"><h3>${esc(r.title)}</h3><div class="body">${r.body.map(l=>`<p>${l}</p>`).join('')}</div></div>
-    ${drill.length?`<div class="sm sec">Закрепление: выберите верный вариант</div>
+    <div class="nav"><button data-go="s-exp">Объяснение</button>${viz.length?'<button data-go="s-viz">Схемы</button>':''}${drill.length?'<button data-go="s-drill">Закрепление</button>':''}<button data-go="s-quiz">Проверка</button></div>
+    <div class="card rule" id="s-exp"><h3>${esc(r.title)}</h3><div class="body">${r.body.map(l=>`<p>${l}</p>`).join('')}</div>
+      ${more.length?`<div class="more" style="border-top:1px solid var(--line);padding-top:10px;margin-top:6px"><div class="sm sec" style="margin:0 0 6px">Подробнее</div>${more.map(l=>`<p>${l}</p>`).join('')}</div>`:''}</div>
+    ${viz.length?`<div id="s-viz" style="display:flex;flex-direction:column;gap:12px">${viz.map(b=>b.t==='tip'?vizHtml(b):`<div class="card">${vizHtml(b)}</div>`).join('')}</div>`:''}
+    ${drill.length?`<div class="sm sec" id="s-drill">Закрепление: выберите верный вариант</div>
     ${drill.map((d,i)=>{ const c = clozeHtml(d.s); return `<div class="card" data-d="${i}"><div class="cloze">${c.html}</div><div class="sm dtr" hidden>${esc(d.ru||'')}</div></div>`; }).join('')}
     <div class="sm" id="dscore"></div>`:''}
-    <div class="sm sec">Проверьте себя</div>
+    <div class="sm sec" id="s-quiz">Проверьте себя</div>
     ${r.quiz.map((q,i)=>{
       const order = q.o.map((t,k)=>({t,k})).sort(()=>Math.random()-.5);
       return `<div class="card"><p class="q" style="font-size:1.05rem">${esc(q.q)}</p><div class="opts" data-q="${i}">${order.map(o=>`<button class="opt" data-k="${o.k}">${esc(o.t)}</button>`).join('')}</div></div>`;}).join('')}
     <div class="sm" id="score"></div>`;
   $('#back').onclick = ()=>render();
+  view.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ const t = document.getElementById(b.dataset.go); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); });
   drill.forEach((d,i)=>{
     const box = view.querySelector(`[data-d="${i}"]`), c = clozeHtml(d.s);
     wireCloze(box, c.answers, ok=>{ dTotal++; if(ok) dScore++; }, ()=>{
@@ -349,30 +398,70 @@ function openRule(id){
       if(qAnswered===r.quiz.length){ st.rules[r.id]=qScore; save(); $('#score').textContent=`Результат: ${qScore} из ${r.quiz.length}`; }
     });
   });
+  window.scrollTo(0,0);   // вход в правило всегда с начала: сначала объяснение
 }
-function renderDeck(q=''){
-  q = q.trim().toLowerCase();
-  const list = DECK.phrases.filter(p=>!q || (p.gr+p.ru+(p.cy||'')).toLowerCase().includes(q));
-  view.innerHTML = `<input type="search" id="q" placeholder="Поиск по-гречески или по-русски" value="${esc(q)}">` +
-    list.slice(0,300).map(p=>`<div class="item"><span>${esc(p.gr)}</span><span class="sm">${esc(p.ru)}</span></div>`).join('') +
-    (list.length>300?`<div class="sm">Показано 300 из ${list.length}. Уточните поиск.</div>`:'') +
-    (list.length?'':'<div class="sm">Ничего не найдено.</div>');
-  const inp = $('#q'); inp.oninput = ()=>{ renderDeck(inp.value); const n=$('#q'); n.focus(); n.setSelectionRange(n.value.length,n.value.length); };
+
+/* ---------- словарь в обе стороны ---------- */
+let dict = {dir:'gr', q:'', n:400, open:null};
+const stripD = s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-zа-яёα-ω0-9 ]/gi,' ').trim();
+function renderDict(){
+  const dir = dict.dir, q = stripD(dict.q);
+  const key = p=>dir==='gr'?p.gr:p.ru, val = p=>dir==='gr'?p.ru:p.gr;
+  let list = DECK.phrases.filter(p=>!q || stripD(p.gr+' '+p.ru+' '+(p.cy||'')).includes(q));
+  list = list.map(p=>[stripD(key(p)),p]).sort((a,b)=>a[0].localeCompare(b[0], dir==='gr'?'el':'ru')).map(x=>x[1]);
+  const shown = list.slice(0, dict.n); let last = '';
+  const body = shown.map(p=>{
+    const L = (stripD(key(p))[0]||'#').toUpperCase(); let h = '';
+    if(L!==last){ last = L; h = `<div class="letter">${esc(L)}</div>`; }
+    const op = dict.open===p.id;
+    return h+`<button class="de" data-id="${p.id}"><div class="k">${esc(key(p))}</div><div class="v">${esc(val(p))}</div>${op?`<div class="x">${esc(p.ex)}<div class="sm">${esc(p.exRu)}</div>${p.cy?`<div class="cy" style="margin-top:6px">на Кипре: ${esc(p.cy)}</div>`:''}<div class="sm">Урок ${p.l}</div></div>`:''}</button>`;
+  }).join('');
+  view.innerHTML = `<div class="dir"><button data-d="gr" aria-pressed="${dir==='gr'}">Ελληνικά → Русский</button><button data-d="ru" aria-pressed="${dir==='ru'}">Русский → Ελληνικά</button></div>
+    <input type="search" id="q" placeholder="Поиск по-гречески или по-русски" value="${esc(dict.q)}">
+    <div class="sm">Найдено: ${list.length}. Нажмите запись, чтобы увидеть пример.</div>${body}
+    ${list.length>dict.n?`<button class="btn wide" id="more">Показать ещё</button>`:''}${list.length?'':'<div class="sm">Ничего не найдено.</div>'}`;
+  view.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{ dict.dir=b.dataset.d; dict.n=400; dict.open=null; renderDict(); window.scrollTo(0,0); });
+  view.querySelectorAll('.de').forEach(b=>b.onclick=()=>{ dict.open = dict.open===b.dataset.id?null:b.dataset.id; const y=window.scrollY; renderDict(); window.scrollTo(0,y); });
+  const m = $('#more'); if(m) m.onclick = ()=>{ dict.n+=400; const y=window.scrollY; renderDict(); window.scrollTo(0,y); };
+  const inp = $('#q'); inp.oninput = ()=>{ dict.q=inp.value; dict.n=400; dict.open=null; renderDict(); const n=$('#q'); n.focus(); n.setSelectionRange(n.value.length,n.value.length); };
 }
+
+/* ---------- настройки (отдельная страница) ---------- */
+const FROM_MARKS=[[1,'с первого урока (всё по порядку)'],[11,'с 11-го'],[21,'с 21-го'],[35,'с 35-го (A2)'],[60,'с 60-го'],[83,'с 83-го (B1)'],[100,'со 100-го'],[130,'со 130-го'],[160,'со 160-го (B2)']];
+function renderSettings(){
+  const s = st.settings;
+  view.innerHTML = `<button class="btn" id="back" style="align-self:flex-start">← Назад</button>
+    <div class="card setp"><div class="big" style="font-size:1.35rem">Настройки</div>
+    <div><h4 class="sm">Режим</h4><div class="seg" id="segMode"><button data-v="light">Светлый</button><button data-v="dark">Тёмный</button></div></div>
+    <div><h4 class="sm">Цветовая гамма</h4><div class="seg" id="segPal">${Object.entries(PALS).map(([k,p])=>`<button class="sw" data-v="${k}" aria-label="${p.n}" title="${p.n}"></button>`).join('')}</div></div>
+    <div><h4 class="sm">Размер текста</h4><div class="seg" id="segSize"><button data-v="1">Обычный</button><button data-v="1.15">Крупный</button><button data-v="1.3">Очень крупный</button></div></div>
+    <div><h4 class="sm">Учёба</h4>
+      <label class="chk"><input type="checkbox" id="optCy" ${s.cy?'checked':''}> Показывать кипрский вариант</label>
+      <label class="chk" style="margin-top:8px"><input type="checkbox" id="optRu" ${s.ru?'checked':''}> На карточках сначала русский</label>
+      <div style="margin-top:10px"><label class="sm" for="optFrom">Новые карточки начинать с урока</label><br><select id="optFrom">${FROM_MARKS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></div></div>
+    <div><h4 class="sm">Данные</h4><button class="btn" id="reset">Сбросить прогресс</button></div></div>`;
+  $('#back').onclick = ()=>{ tab = prevTab; render(); };
+  $('#segMode').onclick = e=>{ const b=e.target.closest('button'); if(b){ s.mode=b.dataset.v; save(); applyLook(); } };
+  $('#segPal').onclick = e=>{ const b=e.target.closest('button'); if(b){ s.pal=b.dataset.v; save(); applyLook(); } };
+  $('#segSize').onclick = e=>{ const b=e.target.closest('button'); if(b){ s.size=b.dataset.v; save(); applyLook(); } };
+  $('#optCy').onchange = e=>{ s.cy=e.target.checked; save(); };
+  $('#optRu').onchange = e=>{ s.ru=e.target.checked; save(); };
+  const f = $('#optFrom'); f.value = String(s.from); if(f.value!==String(s.from)) f.value='1';
+  f.onchange = e=>{ s.from=e.target.value; save(); };
+  $('#reset').onclick = ()=>{ if(confirm('Сбросить весь прогресс (карточки, серию, результаты)? Настройки останутся.')){ st.cards={}; st.days=[]; st.rules={}; save(); sessionActive=false; queue=[]; idx=0; } };
+  applyLook();
+}
+
+let prevTab = 'learn';
 function render(){
-  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===tab));
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', tab!=='settings' && t.dataset.tab===tab));
   $('#streak').textContent = streak()?`Серия: ${streak()} дн.`:'';
   $('#foot').textContent = `Колода: ${DECK.phrases.length} фраз, ${DECK.cloze.length} предложений, ${DECK.texts.length} текстов, ${DECK.rules.length} правил.`;
-  if(tab==='learn') renderLearn(); else if(tab==='tests') renderTests(); else if(tab==='rules') renderRules(); else renderDeck();
+  if(tab==='learn') renderLearn(); else if(tab==='tests') renderTests(); else if(tab==='rules') renderRules(); else if(tab==='settings') renderSettings(); else renderDict();
+  window.scrollTo(0,0);
 }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{ tab=t.dataset.tab; if(tab==='tests') test=null; render(); });
-$('#optCy').checked = !!st.settings.cy; $('#optRu').checked = !!st.settings.ru;
-$('#optCy').onchange = e=>{ st.settings.cy=e.target.checked; save(); render(); };
-$('#optRu').onchange = e=>{ st.settings.ru=e.target.checked; save(); render(); };
-{ const marks=[[1,'с первого урока (всё по порядку)'],[11,'с 11-го'],[21,'с 21-го'],[35,'с 35-го (A2)'],[60,'с 60-го'],[83,'с 83-го (B1)'],[100,'со 100-го'],[130,'со 130-го'],[160,'со 160-го (B2)']];
-  $('#optFrom').innerHTML = marks.map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
-  $('#optFrom').value = String(st.settings.from); if($('#optFrom').value!==String(st.settings.from)) $('#optFrom').value='1'; }
-$('#optFrom').onchange = e=>{ st.settings.from=e.target.value; save(); render(); };
+$('#setBtn').onclick = ()=>{ if(tab!=='settings') prevTab = tab; tab = 'settings'; render(); };
 applyLook(); render();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script></body></html>
