@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f9ff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Ελληνικά · 5 минут</title>
+<style>
+:root{
+  --bg0:#fbfdff; --surface:#ffffff; --ink:#18232f; --muted:#56667a; --line:#dde7f1;
+  --accent:#9cc7f5; --accent-t:#1d5a99; --accent-ink:#14304d;
+  --bg:color-mix(in srgb,var(--accent) 12%,var(--bg0));
+  --accent-soft:color-mix(in srgb,var(--accent) 28%,var(--surface));
+  --good:#1d7a4c; --good-soft:#e1f5ea; --bad:#b03a33; --bad-soft:#fbe7e4; --warn:#7d5200; --warn-soft:#fdf2d4;
+  --f:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif; --fs:1;
+}
+:root[data-theme="dark"]{
+  --bg0:#0f1b2b; --surface:#182a42; --ink:#eaf1f9; --muted:#a8b9cd; --line:#2d4666;
+  --good:#63d49e; --good-soft:#123b2b; --bad:#f2998f; --bad-soft:#44201c; --warn:#f0c067; --warn-soft:#3d3014; color-scheme:dark}
+*{box-sizing:border-box}
+html{font-size:calc(16px*var(--fs))}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 var(--f);padding:16px max(16px,env(safe-area-inset-right)) 28px max(16px,env(safe-area-inset-left));padding-top:max(16px,env(safe-area-inset-top))}
+#app{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.brand{font-weight:700;font-size:1.15rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent-t);outline-offset:2px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tab{border:0;background:none;padding:10px 2px;border-radius:9px;font-weight:600;font-size:.88rem;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.panel{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;min-width:0}
+.fc{min-height:270px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;cursor:pointer;width:100%}
+.big{font-weight:600;font-size:1.65rem;line-height:1.35;overflow-wrap:anywhere;text-wrap:balance}
+.sm{color:var(--muted);font-size:.9rem}
+.ans{border-top:1px solid var(--line);padding-top:12px;width:100%;display:flex;flex-direction:column;gap:6px}
+.ex{font-size:1.05rem;font-weight:500}
+.cy{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:4px 10px;font-weight:600;font-size:.9rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 14px;font-weight:600}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.wide{width:100%;padding:14px}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{border:0;border-radius:10px;padding:14px 4px;font-weight:600}
+.r1{background:var(--warn-soft);color:var(--warn)}.r2{background:var(--accent-soft);color:var(--accent-t)}.r3{background:var(--good-soft);color:var(--good)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent-t);transition:width .2s}
+.hello{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.hello .big{font-size:2rem}
+.stat{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.stat div{text-align:center}.stat b{display:block;font-size:1.4rem}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;font-weight:500;min-width:0;overflow-wrap:anywhere}
+.opt.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.opt:disabled{cursor:default}
+.q{font-size:1.2rem;font-weight:600;margin:0 0 12px;overflow-wrap:anywhere}
+.item{width:100%;text-align:left;display:flex;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.item span{min-width:0;overflow-wrap:anywhere}
+.item span:first-child{font-weight:600}
+.item .sm{text-align:right}
+.rule h3{margin:0 0 8px;font-size:1.15rem}
+.rule p{margin:0 0 8px}
+.sec{font-weight:700;margin:6px 0 0}
+input[type=search]{width:100%;font:inherit;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.cloze{font-size:1.15rem;line-height:2.2;white-space:pre-line;overflow-wrap:anywhere}
+.blank{display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:middle;margin:2px;padding:3px;border-radius:10px;background:var(--accent-soft)}
+.blank button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:2px 10px;font-weight:600;font-size:1rem;line-height:1.7}
+.blank button.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.blank button.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.menu{display:grid;gap:10px}
+.menu button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:2px}
+.menu b{font-size:1.05rem}
+.set{display:flex;flex-direction:column;gap:14px}
+.set h4{margin:0 0 6px;font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:600;font-size:.9rem}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-t)}
+.sw{width:38px;height:38px;border-radius:50%;padding:0;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.chk{display:flex;gap:8px;align-items:center;font-size:.95rem}
+.chk input{width:20px;height:20px}
+.foot{font-size:.78rem;color:var(--muted);text-align:center}
+.mist{display:flex;flex-direction:column;gap:6px}
+select{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);margin-top:4px;max-width:100%}
+</style></head><body>
+<div id="app">
+  <div class="top"><div class="brand">Ελληνικά · 5 минут</div>
+    <div class="row"><span class="sm" id="streak"></span><button class="btn" id="setBtn" aria-expanded="false">Вид</button></div></div>
+  <div class="card set" id="settings" hidden>
+    <div><h4>Режим</h4><div class="seg" id="segMode">
+      <button data-v="light">Светлый</button><button data-v="dark">Тёмный</button></div></div>
+    <div><h4>Цветовая гамма</h4><div class="seg" id="segPal"></div></div>
+    <div><h4>Размер текста</h4><div class="seg" id="segSize">
+      <button data-v="1">Обычный</button><button data-v="1.15">Крупный</button><button data-v="1.3">Очень крупный</button></div></div>
+    <div><h4>Учёба</h4>
+      <label class="chk"><input type="checkbox" id="optCy"> Показывать кипрский вариант</label>
+      <label class="chk" style="margin-top:8px"><input type="checkbox" id="optRu"> На карточках сначала русский</label>
+      <div style="margin-top:10px"><label class="sm" for="optFrom">Новые карточки начинать с урока</label><br><select id="optFrom"></select></div></div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="learn">Учить</button>
+    <button class="tab" role="tab" data-tab="tests">Задания</button>
+    <button class="tab" role="tab" data-tab="rules">Правила</button>
+    <button class="tab" role="tab" data-tab="deck">Колода</button>
+  </div>
+  <div class="panel" id="view"></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script src="data/base.js"></script>
+<script src="data/deck_extra.js"></script>
+<script>
+const DECK = {phrases:[],cloze:[],texts:[],rules:[]};
+(function(){
+  const B = window.BASE || {}, X = window.EXTRA || {};
+  const byL = a=>a.map((v,i)=>[v,i]).sort((p,q)=>(p[0].l-q[0].l)||(p[1]-q[1])).map(x=>x[0]);
+  for(const k of Object.keys(DECK)) DECK[k] = (B[k]||[]).concat(X[k]||[]);
+  DECK.phrases = byL(DECK.phrases); DECK.rules = byL(DECK.rules);
+})();
+const SESSION = 10, MAX_NEW = 5, DAY = 86400000, STEPS = [0,1,2,4,8,16,32,64];
+/* светлые оттенки: a — заливка, t — тёмный вариант для текста, d — для тёмного режима */
+const PALS = {
+  blue:{n:'Голубая',a:'#9cc7f5',t:'#1d5a99',d:'#7fb3ee'}, mint:{n:'Мятная',a:'#9fe0c2',t:'#1b6b49',d:'#78d4ac'},
+  lilac:{n:'Сиреневая',a:'#cbb8f3',t:'#5b3aa0',d:'#b9a0f0'}, peach:{n:'Персиковая',a:'#f7c9a4',t:'#8f4710',d:'#f0b07e'},
+  rose:{n:'Розовая',a:'#f4b6ce',t:'#9a2a58',d:'#ee9dbd'}, sand:{n:'Песочная',a:'#e6dcb4',t:'#6b5a15',d:'#d8c98c'}
+};
+let st = {cards:{}, settings:{}, days:[], rules:{}};
+try{ const s = localStorage.getItem('gr5'); if(s) st = Object.assign(st, JSON.parse(s)); }catch(e){}
+st.settings = Object.assign({cy:false, ru:false, mode:'light', pal:'blue', size:'1', from:'1'}, st.settings);
+if(st.settings.mode==='auto') st.settings.mode='light';
+if(!PALS[st.settings.pal]) st.settings.pal='blue';
+const save = ()=>{ try{ localStorage.setItem('gr5', JSON.stringify(st)); }catch(e){} };
+const $ = s=>document.querySelector(s), view = $('#view'), root = document.documentElement;
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a=>{ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+let tab = 'learn', queue = [], idx = 0, revealed = false, done = 0, sessionActive = false, test = null;
+
+function applyLook(){
+  const s = st.settings, p = PALS[s.pal], dark = s.mode==='dark';
+  if(dark) root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
+  root.style.setProperty('--accent', dark ? p.d : p.a);
+  root.style.setProperty('--accent-t', dark ? p.d : p.t);
+  root.style.setProperty('--accent-ink', dark ? '#0c1624' : '#14304d');
+  root.style.setProperty('--fs', s.size);
+  const tc = document.querySelector('meta[name=theme-color]'); if(tc) tc.content = dark ? '#0f1b2b' : '#f4f9ff';
+  document.querySelectorAll('#segMode button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===s.mode));
+  document.querySelectorAll('#segSize button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===String(s.size)));
+  document.querySelectorAll('#segPal button').forEach(b=>{ const q=PALS[b.dataset.v]; b.style.background = dark ? q.d : q.a; b.setAttribute('aria-pressed', b.dataset.v===s.pal); });
+}
+$('#segPal').innerHTML = Object.entries(PALS).map(([k,p])=>`<button class="sw" data-v="${k}" aria-label="${p.n}" title="${p.n}"></button>`).join('');
+$('#segMode').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.mode=b.dataset.v; save(); applyLook(); } };
+$('#segPal').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.pal=b.dataset.v; save(); applyLook(); } };
+$('#segSize').onclick = e=>{ const b=e.target.closest('button'); if(b){ st.settings.size=b.dataset.v; save(); applyLook(); } };
+$('#setBtn').onclick = ()=>{ const h = $('#settings').hidden = !$('#settings').hidden; $('#setBtn').setAttribute('aria-expanded', String(!h)); };
+
+function today(){ return Math.floor(Date.now()/DAY); }
+function card(id){ return st.cards[id] || (st.cards[id] = {box:-1, due:0}); }
+function buildQueue(){
+  const now = Date.now(), from = +st.settings.from||1;
+  const due = DECK.phrases.filter(p=>card(p.id).box>=0 && card(p.id).due<=now).sort((a,b)=>card(a.id).due-card(b.id).due);
+  const fresh = DECK.phrases.filter(p=>card(p.id).box<0 && p.l>=from).slice(0, MAX_NEW);
+  const q = due.slice(0,SESSION);
+  for(const f of fresh){ if(q.length>=SESSION) break; q.push(f); }
+  for(const d of due.slice(SESSION)){ if(q.length>=SESSION) break; q.push(d); }
+  queue = q; idx = 0; revealed = false; done = 0;
+}
+function rate(r){
+  const p = queue[idx], c = card(p.id);
+  if(r===1){ c.box = 0; c.due = Date.now()+10*60000; queue.push(p); }
+  else if(r===2){ c.box = Math.max(c.box,0); c.due = Date.now()+STEPS[Math.max(c.box,1)]*DAY; }
+  else { c.box = Math.min(c.box+1, STEPS.length-1); c.due = Date.now()+STEPS[c.box]*DAY; }
+  if(r>1) done++;
+  idx++; revealed = false; save();
+  if(idx>=queue.length){ markDay(); sessionActive=false; }
+  render();
+}
+function markDay(){ const d=today(); if(!st.days.includes(d)){ st.days.push(d); save(); } }
+function streak(){ let n=0, d=today(); const s=new Set(st.days); if(!s.has(d)) d--; while(s.has(d)){ n++; d--; } return n; }
+function stats(){
+  const vals = DECK.phrases.map(p=>card(p.id));
+  return {total:vals.length, known:vals.filter(c=>c.box>=3).length, seen:vals.filter(c=>c.box>=0).length, due:vals.filter(c=>c.box>=0 && c.due<=Date.now()).length};
+}
+function renderLearn(){
+  const s = stats();
+  if(!sessionActive){
+    const fin = idx>0 && idx>=queue.length;
+    view.innerHTML = `<div class="card hello">
+      <div class="big">${fin?'Готово на сегодня':'Начнём?'}</div>
+      <div class="sm">${fin?`Повторено карточек: ${done}. Серия: ${streak()} дн.`:'10 карточек, около 5 минут.'}</div>
+      <div class="stat"><div><b>${s.due}</b><span class="sm">к повтору</span></div><div><b>${s.seen}/${s.total}</b><span class="sm">увидено</span></div><div><b>${s.known}</b><span class="sm">знаю</span></div></div>
+      <button class="btn primary wide" id="go">${fin?'Ещё 10 карточек':'Начать 5 минут'}</button></div>`;
+    $('#go').onclick = ()=>{ buildQueue(); sessionActive = queue.length>0; render(); };
+    return;
+  }
+  const p = queue[idx], ru = st.settings.ru;
+  const cyLine = (st.settings.cy && p.cy) ? `<div class="cy">на Кипре: ${esc(p.cy)}</div>` : '';
+  const front = ru ? `<div class="big">${esc(p.ru)}</div>` : `<div class="big">${esc(p.gr)}</div>${cyLine}`;
+  const back = ru ? `<div class="big">${esc(p.gr)}</div>${cyLine}` : `<div class="big" style="font-size:1.25rem">${esc(p.ru)}</div>`;
+  view.innerHTML = `<div class="bar"><i style="width:${Math.min(100,idx/queue.length*100)}%"></i></div>
+    <button class="card fc" id="fc" aria-label="Показать ответ">
+      ${front}
+      ${revealed?`<div class="ans">${back}<div class="ex">${esc(p.ex)}</div><div class="sm">${esc(p.exRu)}</div></div>`:'<div class="sm">Нажмите, чтобы увидеть ответ</div>'}
+    </button>
+    <div class="sm" style="text-align:center">Урок ${p.l} · ${idx+1} из ${queue.length}</div>
+    ${revealed?`<div class="rate"><button class="r1" data-r="1">Забыл</button><button class="r2" data-r="2">Трудно</button><button class="r3" data-r="3">Помню</button></div>`:''}`;
+  $('#fc').onclick = ()=>{ if(!revealed){ revealed = true; render(); } };
+  view.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>rate(+b.dataset.r));
+}
+
+function renderTests(){
+  if(!test){
+    view.innerHTML = `<div class="menu">
+      <button data-m="el"><b>Слово → перевод</b><span class="sm">Греческая фраза, выберите русский вариант</span></button>
+      <button data-m="ru"><b>Перевод → слово</b><span class="sm">Русская фраза, выберите греческий вариант</span></button>
+      <button data-m="mix"><b>В обе стороны</b><span class="sm">Направление меняется от вопроса к вопросу</span></button>
+      <button data-m="cloze"><b>Вставьте слово в предложение</b><span class="sm">8 предложений, выбор из трёх вариантов</span></button>
+      <button data-m="text"><b>Вставьте слова в текст</b><span class="sm">Короткий текст с несколькими пропусками</span></button></div>`;
+    view.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>startTest(b.dataset.m));
+    return;
+  }
+  if(test.kind==='choice') return renderChoice();
+  return renderCloze();
+}
+function startTest(m){
+  if(m==='cloze'||m==='text'){
+    const pool = m==='cloze' ? shuffle(DECK.cloze).slice(0,8) : shuffle(DECK.texts).slice(0,1);
+    test = {kind:'cloze', mode:m, items:pool, i:0, score:0, total:0};
+  } else {
+    const fw = s=>String(s).split(/[\s·,.;!?]+/)[0].toLowerCase();
+    const qs = shuffle(DECK.phrases).slice(0,10).map(p=>{
+      const dir = m==='mix' ? (Math.random()<.5?'el':'ru') : m;
+      const key = dir==='el' ? 'ru' : 'gr', pk = dir==='el' ? 'gr' : 'ru';
+      const wrong = shuffle(DECK.phrases.filter(x=>x.id!==p.id && x[key]!==p[key] && fw(x.gr)!==fw(p.gr) && fw(x.ru)!==fw(p.ru))).slice(0,3).map(x=>x[key]);
+      return {prompt:p[pk], ans:p[key], opts:shuffle([p[key],...wrong]), dir, p, label: dir==='el' ? 'Как это по-русски?' : 'Как это по-гречески?'};
+    });
+    test = {kind:'choice', qs, i:0, score:0, wrong:[], mode0:m};
+  }
+  render();
+}
+function renderChoice(){
+  const t = test;
+  if(t.i>=t.qs.length){
+    view.innerHTML = `<div class="card hello"><div class="big">${t.score} из ${t.qs.length}</div>
+      <div class="sm">${t.score===t.qs.length?'Без ошибок':'Эти фразы стоит повторить'}</div>
+      ${t.wrong.length?`<div class="mist" style="width:100%;text-align:left">${t.wrong.map(p=>`<div class="item"><span>${esc(p.gr)}</span><span class="sm">${esc(p.ru)}</span></div>`).join('')}</div>`:''}
+      <button class="btn primary wide" id="again">Ещё раз</button><button class="btn wide" id="menu">К списку заданий</button></div>`;
+    markDay(); $('#again').onclick = ()=>startTest(t.mode0); $('#menu').onclick = ()=>{ test=null; render(); };
+    return;
+  }
+  const q = t.qs[t.i];
+  view.innerHTML = `<div class="bar"><i style="width:${t.i/t.qs.length*100}%"></i></div>
+    <div class="card"><div class="sm" style="margin-bottom:6px">${q.label} · ${t.i+1} из ${t.qs.length}</div>
+      <p class="q">${esc(q.prompt)}</p>
+      <div class="opts">${q.opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div></div>
+    <div id="nx"></div>`;
+  view.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const k = +b.dataset.k, ok = q.opts[k]===q.ans;
+    view.querySelectorAll('.opt').forEach((x,j)=>{ x.disabled = true; if(q.opts[j]===q.ans) x.classList.add('ok'); });
+    if(!ok){ b.classList.add('no'); t.wrong.push(q.p); } else t.score++;
+    $('#nx').innerHTML = `<div class="card sm" style="margin-bottom:10px"><b>${esc(q.p.gr)}</b> — ${esc(q.p.ru)}<br>${esc(q.p.ex)}</div><button class="btn primary wide" id="next">Дальше</button>`;
+    $('#next').onclick = ()=>{ t.i++; render(); };
+  });
+}
+
+/* предложение с пропусками: возвращает html и ответы */
+function clozeHtml(s){
+  let html = '', last = 0, n = 0; const answers = [], re = /\{\{([^}]+)\}\}/g; let m;
+  while((m = re.exec(s))){
+    const parts = m[1].split('|');
+    html += esc(s.slice(last, m.index));
+    html += `<span class="blank" data-b="${n}">${shuffle(parts).map(o=>`<button data-o="${esc(o)}">${esc(o)}</button>`).join('')}</span>`;
+    answers.push(parts[0]); last = m.index + m[0].length; n++;
+  }
+  html += esc(s.slice(last));
+  return {html, answers, open:n};
+}
+/* оживляет пропуски внутри контейнера; onEach(ok) на каждый ответ, onAll() когда все заполнены */
+function wireCloze(box, answers, onEach, onAll){
+  let answered = 0;
+  box.querySelectorAll('.blank').forEach(bl=>{
+    const ans = answers[+bl.dataset.b];
+    bl.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const ok = b.dataset.o===ans;
+      bl.querySelectorAll('button').forEach(x=>{ x.disabled = true; if(x.dataset.o===ans) x.classList.add('ok'); });
+      if(!ok) b.classList.add('no');
+      onEach(ok); answered++;
+      if(answered===answers.length) onAll();
+    });
+  });
+}
+function renderCloze(){
+  const t = test;
+  if(t.i>=t.items.length){
+    view.innerHTML = `<div class="card hello"><div class="big">${t.score} из ${t.total}</div>
+      <div class="sm">${t.score===t.total?'Без ошибок':'Попробуйте ещё раз, варианты перемешаются'}</div>
+      <button class="btn primary wide" id="again">Ещё раз</button><button class="btn wide" id="menu">К списку заданий</button></div>`;
+    markDay(); const m = t.mode; $('#again').onclick = ()=>startTest(m); $('#menu').onclick = ()=>{ test=null; render(); };
+    return;
+  }
+  const it = t.items[t.i], c = clozeHtml(it.s);
+  view.innerHTML = `<div class="bar"><i style="width:${t.i/t.items.length*100}%"></i></div>
+    <div class="card"><div class="sm" style="margin-bottom:8px">${t.mode==='text'?esc(it.title)+' · ':''}Выберите слово для каждого пропуска</div>
+    <div class="cloze">${c.html}</div></div><div id="nx"></div>`;
+  wireCloze(view, c.answers, ok=>{ t.total++; if(ok) t.score++; }, ()=>{
+    $('#nx').innerHTML = `<div class="card sm" style="margin-bottom:10px">${esc(it.ru).replace(/\n/g,'<br>')}</div><button class="btn primary wide" id="next">${t.i+1<t.items.length?'Дальше':'Результат'}</button>`;
+    $('#next').onclick = ()=>{ t.i++; render(); };
+  });
+}
+
+/* правила: объяснение → закрепление (drill) → проверка (quiz) */
+function renderRules(){
+  const groups = {};
+  DECK.rules.forEach(r=>{ const g = Math.floor((r.l-1)/10); (groups[g] = groups[g]||[]).push(r); });
+  view.innerHTML = Object.keys(groups).map(g=>`<div class="sm sec">Уроки ${g*10+1}–${g*10+10}</div>`+groups[g].map(r=>{
+    const res = st.rules[r.id];
+    return `<button class="item" data-r="${r.id}"><span>${esc(r.title)}</span><span class="sm">${res!=null?'тест: '+res+'/'+r.quiz.length:'урок '+r.l}</span></button>`;
+  }).join('')).join('');
+  view.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>openRule(b.dataset.r));
+}
+function openRule(id){
+  const r = DECK.rules.find(x=>x.id===id), drill = r.drill||[];
+  let dScore = 0, dTotal = 0, qScore = 0, qAnswered = 0;
+  view.innerHTML = `<button class="btn" id="back" style="align-self:flex-start">← Все правила</button>
+    <div class="card rule"><h3>${esc(r.title)}</h3><div class="body">${r.body.map(l=>`<p>${l}</p>`).join('')}</div></div>
+    ${drill.length?`<div class="sm sec">Закрепление: выберите верный вариант</div>
+    ${drill.map((d,i)=>{ const c = clozeHtml(d.s); return `<div class="card" data-d="${i}"><div class="cloze">${c.html}</div><div class="sm dtr" hidden>${esc(d.ru||'')}</div></div>`; }).join('')}
+    <div class="sm" id="dscore"></div>`:''}
+    <div class="sm sec">Проверьте себя</div>
+    ${r.quiz.map((q,i)=>{
+      const order = q.o.map((t,k)=>({t,k})).sort(()=>Math.random()-.5);
+      return `<div class="card"><p class="q" style="font-size:1.05rem">${esc(q.q)}</p><div class="opts" data-q="${i}">${order.map(o=>`<button class="opt" data-k="${o.k}">${esc(o.t)}</button>`).join('')}</div></div>`;}).join('')}
+    <div class="sm" id="score"></div>`;
+  $('#back').onclick = ()=>render();
+  drill.forEach((d,i)=>{
+    const box = view.querySelector(`[data-d="${i}"]`), c = clozeHtml(d.s);
+    wireCloze(box, c.answers, ok=>{ dTotal++; if(ok) dScore++; }, ()=>{
+      box.querySelector('.dtr').hidden = false;
+      if(view.querySelectorAll('.dtr:not([hidden])').length===drill.length) $('#dscore').textContent = `Закрепление: верно ${dScore} из ${dTotal}`;
+    });
+  });
+  view.querySelectorAll('.opts').forEach(box=>{
+    const q = r.quiz[+box.dataset.q];
+    box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      if(box.dataset.done) return; box.dataset.done=1; qAnswered++;
+      const ok = +b.dataset.k===q.a; if(ok) qScore++;
+      b.classList.add(ok?'ok':'no');
+      if(!ok) box.querySelectorAll('.opt').forEach(x=>{ if(+x.dataset.k===q.a) x.classList.add('ok'); });
+      if(qAnswered===r.quiz.length){ st.rules[r.id]=qScore; save(); $('#score').textContent=`Результат: ${qScore} из ${r.quiz.length}`; }
+    });
+  });
+}
+function renderDeck(q=''){
+  q = q.trim().toLowerCase();
+  const list = DECK.phrases.filter(p=>!q || (p.gr+p.ru+(p.cy||'')).toLowerCase().includes(q));
+  view.innerHTML = `<input type="search" id="q" placeholder="Поиск по-гречески или по-русски" value="${esc(q)}">` +
+    list.slice(0,300).map(p=>`<div class="item"><span>${esc(p.gr)}</span><span class="sm">${esc(p.ru)}</span></div>`).join('') +
+    (list.length>300?`<div class="sm">Показано 300 из ${list.length}. Уточните поиск.</div>`:'') +
+    (list.length?'':'<div class="sm">Ничего не найдено.</div>');
+  const inp = $('#q'); inp.oninput = ()=>{ renderDeck(inp.value); const n=$('#q'); n.focus(); n.setSelectionRange(n.value.length,n.value.length); };
+}
+function render(){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===tab));
+  $('#streak').textContent = streak()?`Серия: ${streak()} дн.`:'';
+  $('#foot').textContent = `Колода: ${DECK.phrases.length} фраз, ${DECK.cloze.length} предложений, ${DECK.texts.length} текстов, ${DECK.rules.length} правил.`;
+  if(tab==='learn') renderLearn(); else if(tab==='tests') renderTests(); else if(tab==='rules') renderRules(); else renderDeck();
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{ tab=t.dataset.tab; if(tab==='tests') test=null; render(); });
+$('#optCy').checked = !!st.settings.cy; $('#optRu').checked = !!st.settings.ru;
+$('#optCy').onchange = e=>{ st.settings.cy=e.target.checked; save(); render(); };
+$('#optRu').onchange = e=>{ st.settings.ru=e.target.checked; save(); render(); };
+{ const marks=[[1,'с первого урока (всё по порядку)'],[11,'с 11-го'],[21,'с 21-го'],[35,'с 35-го (A2)'],[60,'с 60-го'],[83,'с 83-го (B1)'],[100,'со 100-го'],[130,'со 130-го'],[160,'со 160-го (B2)']];
+  $('#optFrom').innerHTML = marks.map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+  $('#optFrom').value = String(st.settings.from); if($('#optFrom').value!==String(st.settings.from)) $('#optFrom').value='1'; }
+$('#optFrom').onchange = e=>{ st.settings.from=e.target.value; save(); render(); };
+applyLook(); render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
