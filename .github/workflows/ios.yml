@@ -114,3 +114,4 @@ jobs:
           EOF
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist build/ExportOptions.plist \
             -allowProvisioningUpdates -authenticationKeyID $ASC_KEY_ID -authenticationKeyIssuerID $ASC_ISSUER_ID -authenticationKeyPath $KEY | tail -20
+# запуск с секретами Apple
