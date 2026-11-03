@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ios-${{ github.ref }}
@@ -58,6 +58,33 @@ jobs:
           name: greek-ios-simulator
           path: greek-ios-simulator.zip
           retention-days: 30
+
+      - name: Неподписанный IPA для установки через AltStore / Sideloadly
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -sdk iphoneos -derivedDataPath build/dev \
+            MARKETING_VERSION=1.0 CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build | tail -15
+          rm -rf build/ipa && mkdir -p build/ipa/Payload
+          cp -R build/dev/Build/Products/Release-iphoneos/App.app build/ipa/Payload/
+          (cd build/ipa && zip -qry "$GITHUB_WORKSPACE/greek-ios-unsigned.ipa" Payload)
+          ls -la greek-ios-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: greek-ios-ipa
+          path: greek-ios-unsigned.ipa
+          retention-days: 30
+
+      - name: Релиз iOS (IPA для самостоятельной подписи)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete ios-latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create ios-latest greek-ios-unsigned.ipa \
+            --title "Ελληνικά для iPhone (неподписанный IPA)" --prerelease --latest=false \
+            --notes "Сборка из ${GITHUB_SHA::7}. Неподписанный IPA: поставьте через AltStore или Sideloadly со своим Apple ID (подпись действует 7 дней и обновляется через программу). Для App Store нужен Apple Developer Program, см. store/app-store.md."
 
       # Дальше шаги работают только когда добавлены секреты Apple Developer (см. store/app-store.md)
       - name: Архив и загрузка в TestFlight
