@@ -126,6 +126,89 @@ select{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--l
 .de{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:block}
 .de .k{font-weight:600;overflow-wrap:anywhere}.de .v{color:var(--muted);overflow-wrap:anywhere}.de .x{margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:.92rem}
 .setp{display:flex;flex-direction:column;gap:14px}
+
+/* ===== iOS-стиль: сгруппированный фон, крупные скругления, стеклянная панель вкладок ===== */
+:root{
+  --bg0:#f2f2f7; --surface:#ffffff; --ink:#1c1c1e; --muted:#6c6c70; --line:rgba(60,60,67,.14);
+  --bg:var(--bg0);
+  --f:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",system-ui,Roboto,"Segoe UI",sans-serif;
+  --sh:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.05);
+  --glass:rgba(255,255,255,.72);
+  --r:22px;
+}
+:root[data-theme="dark"]{
+  --bg0:#000000; --surface:#1c1c1e; --ink:#f2f2f7; --muted:#a1a1a6; --line:rgba(235,235,245,.14);
+  --sh:none; --glass:rgba(40,40,44,.72);
+}
+body{letter-spacing:-.01em;-webkit-font-smoothing:antialiased;padding-bottom:calc(112px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
+#app{gap:16px}
+button{-webkit-tap-highlight-color:transparent;transition:transform .12s ease,opacity .12s ease,background-color .2s}
+button:active:not(:disabled){transform:scale(.97);opacity:.85}
+/* шапка с крупным заголовком */
+.top{align-items:flex-end;padding:6px 2px 0}
+.brand{font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+#streak{font-weight:600}
+/* карточки */
+.card{border:0;border-radius:var(--r);box-shadow:var(--sh);padding:20px 18px}
+.card.fc{border-radius:28px}
+.card.hello{padding:28px 20px}
+/* кнопки */
+.btn{border:0;border-radius:999px;padding:11px 18px;background:var(--accent-soft);color:var(--accent-t);font-weight:600}
+.btn.primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 55%,transparent)}
+.btn.wide{border-radius:16px;padding:16px;font-size:1.05rem}
+#setBtn{padding:9px 14px;font-size:.9rem}
+/* оценка карточки */
+.rate{gap:10px}.rate button{border-radius:18px;padding:16px 4px;font-size:1rem}
+/* стеклянная панель вкладок снизу */
+.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));width:min(calc(100% - 28px),512px);z-index:20;
+  background:var(--glass);-webkit-backdrop-filter:saturate(1.8) blur(24px);backdrop-filter:saturate(1.8) blur(24px);
+  border:.5px solid var(--line);border-radius:999px;padding:5px;box-shadow:0 10px 30px rgba(0,0,0,.14);gap:2px}
+.tab{border-radius:999px;padding:11px 2px;font-size:.82rem;letter-spacing:0}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--accent-t);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+:root[data-theme="dark"] .tab[aria-selected="true"]{background:rgba(255,255,255,.16);color:var(--ink)}
+/* варианты ответов и списки */
+.opt{border:0;border-radius:16px;background:var(--bg);padding:14px 16px;font-weight:500}
+.card .opt{background:color-mix(in srgb,var(--ink) 5%,var(--surface))}
+.opt.ok{background:var(--good-soft)}.opt.no{background:var(--bad-soft)}
+.item,.de{border:0;border-radius:16px;box-shadow:var(--sh);padding:14px 16px}
+.item{align-items:center}
+.sec,.letter{padding-left:6px}
+.sec{text-transform:uppercase;letter-spacing:.05em;font-size:.78rem;color:var(--muted);margin-top:10px}
+input[type=search]{border:0;border-radius:14px;background:color-mix(in srgb,var(--ink) 7%,var(--surface));padding:12px 14px;box-shadow:none}
+select{border:0;border-radius:12px;background:color-mix(in srgb,var(--ink) 7%,var(--surface));padding:10px 12px}
+/* сегменты */
+.seg{background:color-mix(in srgb,var(--ink) 8%,transparent);border-radius:12px;padding:3px;gap:2px;display:inline-flex}
+.seg button{border:0;background:none;border-radius:10px;padding:7px 14px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.12);border:0}
+.seg:has(.sw){background:none;padding:0;gap:12px}
+.sw{width:40px;height:40px;border:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--accent-t)}
+.dir{border:0;border-radius:14px;background:color-mix(in srgb,var(--ink) 8%,transparent);padding:3px}
+.dir button{border-radius:11px}
+.dir button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.nav button{border:0;background:var(--surface);box-shadow:var(--sh);color:var(--accent-t)}
+/* переключатели как в iOS */
+.chk{justify-content:space-between;flex-direction:row-reverse;padding:12px 0;border-top:.5px solid var(--line);font-size:1rem}
+.chk input{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:999px;background:color-mix(in srgb,var(--ink) 18%,transparent);position:relative;transition:background .25s;flex:none;margin:0}
+.chk input:before{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.3);transition:transform .25s}
+.chk input:checked{background:#34c759}.chk input:checked:before{transform:translateX(20px)}
+.setp h4{margin:0 0 8px}
+/* блоки схем */
+.tb th{border-radius:0}.tb td{border-top:.5px solid var(--line)}
+.cmp>div{border:0;border-radius:16px}
+.exs div{border-radius:0 14px 14px 0}
+.tip{border-radius:16px}
+.blank{border-radius:12px}.blank button{border:0;border-radius:9px;background:var(--surface)}
+.bar{height:5px;border-radius:99px}
+.foot{padding-bottom:8px}
+
+.brand{font-size:1.55rem;white-space:nowrap}
+.top .row{flex-wrap:nowrap}
+#setBtn{white-space:nowrap}
+.seg .sw{border-radius:50%;padding:0}
+#segSize,#segMode{display:flex;width:100%}
+#segSize button,#segMode button{flex:1;padding:8px 4px;font-size:.85rem;white-space:nowrap}
+:root[data-theme="dark"] .seg button[aria-pressed="true"],:root[data-theme="dark"] .dir button[aria-pressed="true"]{background:#636366;color:#fff}
 </style></head><body>
 <div id="app">
   <div class="top"><div class="brand">Ελληνικά · 5 минут</div>
