@@ -2,3 +2,6 @@
 *.keystore
 signing-info.txt
 signing-keystore-base64.txt
+node_modules/
+www/
+ios/

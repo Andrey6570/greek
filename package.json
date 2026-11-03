@@ -1,0 +1,17 @@
+{
+  "name": "greek-5-minut",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ελληνικά · 5 минут: ежедневная практика греческого",
+  "scripts": {
+    "prepare-www": "node scripts/prepare-www.js",
+    "ios:add": "npm run prepare-www && npx cap add ios && npx cap sync ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.0",
+    "@capacitor/ios": "^7.4.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.0"
+  }
+}

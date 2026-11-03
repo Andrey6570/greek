@@ -1,0 +1,6 @@
+{
+  "appId": "com.andrey6570.greek",
+  "appName": "Ελληνικά",
+  "webDir": "www",
+  "ios": { "contentInset": "never", "backgroundColor": "#F2F2F7" }
+}
