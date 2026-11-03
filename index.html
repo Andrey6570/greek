@@ -522,7 +522,14 @@ function renderSettings(){
       <label class="chk"><input type="checkbox" id="optCy" ${s.cy?'checked':''}> Показывать кипрский вариант</label>
       <label class="chk" style="margin-top:8px"><input type="checkbox" id="optRu" ${s.ru?'checked':''}> На карточках сначала русский</label>
       <div style="margin-top:10px"><label class="sm" for="optFrom">Новые карточки начинать с урока</label><br><select id="optFrom">${FROM_MARKS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></div></div>
-    <div><h4 class="sm">Данные</h4><button class="btn" id="reset">Сбросить прогресс</button></div></div>`;
+    <div><h4 class="sm">Прогресс</h4>
+      <div class="row"><button class="btn" id="pSave">Сохранить прогресс</button><button class="btn" id="pLoad">Загрузить прогресс</button></div>
+      <div class="sm" id="pMsg" style="margin-top:8px"></div>
+      <div id="pBox" hidden style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+        <textarea id="pText" rows="5" placeholder="Вставьте сюда сохранённый текст или выберите файл" style="width:100%;font:inherit;font-size:.85rem;padding:10px;border-radius:12px;border:0;background:color-mix(in srgb,var(--ink) 7%,var(--surface));color:var(--ink)"></textarea>
+        <div class="row"><input type="file" id="pFile" accept=".json,application/json,text/plain" style="max-width:100%"><button class="btn primary" id="pApply">Загрузить</button></div>
+      </div>
+      <div style="margin-top:12px"><button class="btn" id="reset">Сбросить прогресс</button></div></div></div>`;
   $('#back').onclick = ()=>{ tab = prevTab; render(); };
   $('#segMode').onclick = e=>{ const b=e.target.closest('button'); if(b){ s.mode=b.dataset.v; save(); applyLook(); } };
   $('#segPal').onclick = e=>{ const b=e.target.closest('button'); if(b){ s.pal=b.dataset.v; save(); applyLook(); } };
@@ -532,7 +539,47 @@ function renderSettings(){
   const f = $('#optFrom'); f.value = String(s.from); if(f.value!==String(s.from)) f.value='1';
   f.onchange = e=>{ s.from=e.target.value; save(); };
   $('#reset').onclick = ()=>{ if(confirm('Сбросить весь прогресс (карточки, серию, результаты)? Настройки останутся.')){ st.cards={}; st.days=[]; st.rules={}; save(); sessionActive=false; queue=[]; idx=0; } };
+  progressUI();
   applyLook();
+}
+
+/* ---------- сохранение / загрузка прогресса ---------- */
+function progressPack(){
+  const cards = {}; Object.keys(st.cards).forEach(k=>{ if(st.cards[k].box>=0) cards[k] = st.cards[k]; });
+  return JSON.stringify({app:'greek5', v:1, saved:new Date().toISOString(), data:{cards, days:st.days, rules:st.rules, settings:st.settings}});
+}
+function progressApply(txt){
+  let o; try{ o = JSON.parse(txt.trim()); }catch(e){ throw new Error('Текст не похож на сохранённый прогресс.'); }
+  if(!o || o.app!=='greek5' || !o.data) throw new Error('Это не файл прогресса этого приложения.');
+  st.cards = o.data.cards||{}; st.days = o.data.days||[]; st.rules = o.data.rules||{};
+  if(o.data.settings) st.settings = Object.assign(st.settings, o.data.settings);
+  if(!PALS[st.settings.pal]) st.settings.pal='blue';
+  save(); sessionActive=false; queue=[]; idx=0; applyLook();
+  return Object.keys(st.cards).length;
+}
+function progressUI(){
+  const msg = t=>{ $('#pMsg').textContent = t; };
+  $('#pSave').onclick = async ()=>{
+    const txt = progressPack(), name = 'greek-progress-'+new Date().toISOString().slice(0,10)+'.json'; let done = '';
+    try{
+      if(window.AndroidBridge && AndroidBridge.shareText){ AndroidBridge.shareText(name, txt); done = 'Выберите, куда отправить файл (почта, заметки, диск).'; }
+      else if(navigator.share){
+        try{ const f = new File([txt], name, {type:'text/plain'}); if(navigator.canShare && navigator.canShare({files:[f]})) await navigator.share({files:[f], title:name}); else await navigator.share({title:name, text:txt}); done = 'Готово: прогресс отправлен.'; }
+        catch(e){ if(e&&e.name==='AbortError') return; }
+      }
+      if(!done){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt],{type:'application/json'})); a.download = name; document.body.appendChild(a); a.click(); a.remove(); done = 'Файл сохранён в загрузки.'; }
+    }catch(e){}
+    try{ await navigator.clipboard.writeText(txt); done += ' Текст также скопирован в буфер обмена.'; }catch(e){}
+    msg(done || 'Не удалось сохранить.');
+  };
+  $('#pLoad').onclick = ()=>{ const b=$('#pBox'); b.hidden = !b.hidden; if(!b.hidden){ b.style.display='flex'; } else b.style.display='none'; };
+  $('#pBox').style.display = 'none';
+  $('#pFile').onchange = e=>{ const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = ()=>{ $('#pText').value = r.result; }; r.readAsText(f); };
+  $('#pApply').onclick = ()=>{
+    const t = $('#pText').value; if(!t.trim()){ msg('Вставьте текст или выберите файл.'); return; }
+    if(!confirm('Заменить текущий прогресс загруженным?')) return;
+    try{ const n = progressApply(t); msg('Загружено. Изучаемых фраз: '+n+'.'); $('#pText').value=''; }catch(e){ msg(e.message); }
+  };
 }
 
 let prevTab = 'learn';

@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.andrey6570.greek"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = buildNumber
         versionName = "1.0.$buildNumber"
     }

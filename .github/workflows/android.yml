@@ -54,7 +54,7 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           set -o pipefail
-          ./gradlew :app:assembleRelease --no-daemon 2>&1 | tee ../build.log
+          ./gradlew :app:assembleRelease :app:bundleRelease --no-daemon 2>&1 | tee ../build.log
 
       - name: Ошибки сборки в аннотации
         if: failure()
@@ -66,20 +66,24 @@ jobs:
             echo "::error title=build $f::$(sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g' "$f")"
           done
 
-      - name: Переименовать APK
-        run: cp android/app/build/outputs/apk/release/app-release.apk "greek-1.0.${{ github.run_number }}.apk"
+      - name: Переименовать APK и AAB
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk "greek-1.0.${{ github.run_number }}.apk"
+          cp android/app/build/outputs/bundle/release/app-release.aab "greek-1.0.${{ github.run_number }}.aab"
 
       - uses: actions/upload-artifact@v4
         with:
           name: greek-apk
-          path: greek-*.apk
+          path: |
+            greek-*.apk
+            greek-*.aab
           retention-days: 30
 
       - name: Релиз для скачивания на телефон
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "v1.0.${{ github.run_number }}" greek-*.apk \
+          gh release create "v1.0.${{ github.run_number }}" greek-*.apk greek-*.aab \
             --title "Ελληνικά 1.0.${{ github.run_number }}" \
-            --notes "Сборка из ${GITHUB_SHA::7}. Установка: скачать APK на телефоне и открыть." \
+            --notes "Сборка из ${GITHUB_SHA::7}. APK — для установки на телефон, AAB — для загрузки в Google Play." \
             --latest
