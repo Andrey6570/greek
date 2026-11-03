@@ -16,6 +16,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import androidx.webkit.WebViewAssetLoader;
 
@@ -23,10 +24,18 @@ import androidx.webkit.WebViewAssetLoader;
 public class MainActivity extends Activity {
     private static final int PICK = 41;
     private WebView web;
+    private FrameLayout box;
     private ValueCallback<Uri[]> chooser;
 
+    /** Мост: сохранение прогресса и цвет системных панелей */
+    /* (описание ниже) */
     /** Мост для сохранения прогресса: отправляет текст через системное меню «Поделиться». */
     public class Bridge {
+        @JavascriptInterface
+        public void setTheme(boolean dark) {
+            runOnUiThread(() -> applyBars(dark));
+        }
+
         @JavascriptInterface
         public void shareText(String name, String text) {
             runOnUiThread(() -> {
@@ -46,10 +55,14 @@ public class MainActivity extends Activity {
                 .addPathHandler("/", new WebViewAssetLoader.AssetsPathHandler(this))
                 .build();
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#F2F2F7"));
-        setContentView(web);
-        // targetSdk 35: приложение рисуется под системными панелями, поэтому отступы задаём сами
-        web.setOnApplyWindowInsetsListener((v, insets) -> {
+        web.setBackgroundColor(Color.TRANSPARENT);
+        box = new FrameLayout(this);
+        box.addView(web, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        setContentView(box);
+        applyBars(false);
+        // targetSdk 35: приложение рисуется под системными панелями; отступы задаём контейнеру
+        // (у самого WebView padding игнорируется, поэтому отдельный FrameLayout)
+        box.setOnApplyWindowInsetsListener((v, insets) -> {
             int t, b, l, r;
             if (Build.VERSION.SDK_INT >= 30) {
                 android.graphics.Insets s = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
@@ -59,7 +72,7 @@ public class MainActivity extends Activity {
                 l = insets.getSystemWindowInsetLeft(); r = insets.getSystemWindowInsetRight();
             }
             v.setPadding(l, t, r, b);
-            return insets;
+            return Build.VERSION.SDK_INT >= 30 ? WindowInsets.CONSUMED : insets.consumeSystemWindowInsets();
         });
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
@@ -88,6 +101,17 @@ public class MainActivity extends Activity {
         });
         if (state != null) web.restoreState(state);
         else web.loadUrl("https://appassets.androidplatform.net/index.html");
+    }
+
+    /** Цвет фона и значков системных панелей под тему приложения */
+    private void applyBars(boolean dark) {
+        int bg = dark ? 0xFF000000 : 0xFFF2F2F7;
+        box.setBackgroundColor(bg);
+        getWindow().setStatusBarColor(bg);
+        getWindow().setNavigationBarColor(bg);
+        int f = box.getSystemUiVisibility();
+        int light = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | (Build.VERSION.SDK_INT >= 26 ? View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : 0);
+        box.setSystemUiVisibility(dark ? (f & ~light) : (f | light));
     }
 
     @Override

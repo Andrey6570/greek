@@ -257,6 +257,7 @@ function applyLook(){
   root.style.setProperty('--accent-t', dark ? p.d : p.t);
   root.style.setProperty('--accent-ink', dark ? '#0c1624' : '#14304d');
   root.style.setProperty('--fs', s.size);
+  try{ if(window.AndroidBridge && AndroidBridge.setTheme) AndroidBridge.setTheme(dark); }catch(e){}
   const tc = document.querySelector('meta[name=theme-color]'); if(tc) tc.content = dark ? '#0f1b2b' : '#f4f9ff';
   document.querySelectorAll('#segMode button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===s.mode));
   document.querySelectorAll('#segSize button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===String(s.size)));
