@@ -1,0 +1,4 @@
+*.jks
+*.keystore
+signing-info.txt
+signing-keystore-base64.txt
